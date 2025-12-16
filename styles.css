@@ -310,3 +310,20 @@ main { padding: 40px 28px 80px; max-width: 1180px; margin: 0 auto; }
   50% { transform: translateY(-2px) scale(1.06); box-shadow: 0 20px 36px rgba(15,31,58,0.32); }
   100% { transform: translateY(0) scale(1); }
 }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.show {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

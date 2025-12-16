@@ -119,3 +119,19 @@ sliderTrack?.addEventListener('touchend', touchEnd);
 sliderTrack?.addEventListener('mousedown', touchStart);
 window.addEventListener('mousemove', touchMove);
 window.addEventListener('mouseup', touchEnd);
+
+// Reveal on scroll
+const revealElements = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+      });
+    },
+    { threshold: 0.15 }
+  );
+  revealElements.forEach(el => observer.observe(el));
+} else {
+  revealElements.forEach(el => el.classList.add('show'));
+}
