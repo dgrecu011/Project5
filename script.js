@@ -34,80 +34,88 @@ window.addEventListener('scroll', toggleBackToTop);
 const sliderTrack = document.querySelector('.slider-track');
 const prevBtn = document.querySelector('.slider-btn.prev');
 const nextBtn = document.querySelector('.slider-btn.next');
-let slides = sliderTrack ? Array.from(sliderTrack.children) : [];
-let currentIndex = 1;
+const slides = sliderTrack ? Array.from(sliderTrack.children) : [];
+let currentIndex = 0;
 let stepSize = 0;
-
-const buildClones = () => {
-  if (!sliderTrack || !slides.length) return;
-  const first = slides[0].cloneNode(true);
-  const last = slides[slides.length - 1].cloneNode(true);
-  sliderTrack.appendChild(first);
-  sliderTrack.insertBefore(last, slides[0]);
-  slides = Array.from(sliderTrack.children);
-};
+let startX = 0;
+let currentTranslate = 0;
+let isDragging = false;
 
 const computeStep = () => {
   if (!sliderTrack || slides.length === 0) return 0;
   const style = getComputedStyle(sliderTrack);
   const gap = parseFloat(style.columnGap || style.gap || '18');
-  return slides[0].offsetWidth + gap;
+  return slides[0].getBoundingClientRect().width + gap;
 };
 
-const applyTransform = (instant = false) => {
+const updateSlider = (instant = false) => {
   if (!sliderTrack) return;
   sliderTrack.style.transition = instant ? 'none' : 'transform 0.45s ease';
   sliderTrack.style.transform = `translateX(-${currentIndex * stepSize}px)`;
 };
 
 const initSlider = () => {
-  if (!sliderTrack || !slides.length) return;
-  buildClones();
   stepSize = computeStep();
-  currentIndex = 1;
-  applyTransform(true);
-  // force reflow to re-enable transition
-  void sliderTrack.offsetWidth;
-  sliderTrack.style.transition = 'transform 0.45s ease';
+  currentIndex = 0;
+  updateSlider(true);
+  // re-enable transition
+  void sliderTrack?.offsetWidth;
+  if (sliderTrack) sliderTrack.style.transition = 'transform 0.45s ease';
 };
 
 const handleNext = () => {
-  if (!sliderTrack) return;
-  currentIndex += 1;
-  applyTransform();
+  if (!slides.length) return;
+  currentIndex = (currentIndex + 1) % slides.length;
+  updateSlider();
 };
 
 const handlePrev = () => {
-  if (!sliderTrack) return;
-  currentIndex -= 1;
-  applyTransform();
-};
-
-const onTransitionEnd = () => {
-  if (!sliderTrack || slides.length === 0) return;
-  // if we've moved past the last real slide
-  if (currentIndex === slides.length - 1) {
-    currentIndex = 1;
-    applyTransform(true);
-    void sliderTrack.offsetWidth;
-    sliderTrack.style.transition = 'transform 0.45s ease';
-  }
-  // if we've moved before the first real slide
-  if (currentIndex === 0) {
-    currentIndex = slides.length - 2;
-    applyTransform(true);
-    void sliderTrack.offsetWidth;
-    sliderTrack.style.transition = 'transform 0.45s ease';
-  }
+  if (!slides.length) return;
+  currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+  updateSlider();
 };
 
 prevBtn?.addEventListener('click', handlePrev);
 nextBtn?.addEventListener('click', handleNext);
-sliderTrack?.addEventListener('transitionend', onTransitionEnd);
 
 window.addEventListener('resize', () => {
   stepSize = computeStep();
-  applyTransform(true);
+  updateSlider(true);
 });
 
 initSlider();
+
+// Touch drag/swipe for mobile
+const touchStart = (e) => {
+  if (!sliderTrack) return;
+  isDragging = true;
+  startX = e.touches ? e.touches[0].clientX : e.clientX;
+  sliderTrack.style.transition = 'none';
+  currentTranslate = -currentIndex * stepSize;
+};
+
+const touchMove = (e) => {
+  if (!isDragging || !sliderTrack) return;
+  const x = e.touches ? e.touches[0].clientX : e.clientX;
+  const delta = x - startX;
+  sliderTrack.style.transform = `translateX(${currentTranslate + delta}px)`;
+};
+
+const touchEnd = (e) => {
+  if (!isDragging) return;
+  isDragging = false;
+  if (!sliderTrack) return;
+  const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+  const delta = x - startX;
+  const threshold = stepSize * 0.25;
+  if (delta < -threshold) handleNext();
+  else if (delta > threshold) handlePrev();
+  else updateSlider();
+};
+
+sliderTrack?.addEventListener('touchstart', touchStart, { passive: true });
+sliderTrack?.addEventListener('touchmove', touchMove, { passive: true });
+sliderTrack?.addEventListener('touchend', touchEnd);
+sliderTrack?.addEventListener('mousedown', touchStart);
+window.addEventListener('mousemove', touchMove);
+window.addEventListener('mouseup', touchEnd);

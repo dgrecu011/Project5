@@ -270,8 +270,8 @@ main { padding: 40px 28px 80px; max-width: 1180px; margin: 0 auto; }
   .nav .nav-links { display: none; }
   .cta-group { width: auto; margin-left: auto; }
   .hero { padding-top: 10px; }
-  .slider-btn.prev { left: 6px; }
-  .slider-btn.next { right: 6px; }
+  .slider-btn.prev,
+  .slider-btn.next { display: none; }
   .tile { min-width: 260px; flex: 0 0 85%; }
 }
 
