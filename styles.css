@@ -129,6 +129,15 @@ main { padding: 40px 28px 80px; max-width: 1180px; margin: 0 auto; }
   transition: transform 0.45s ease;
   padding: 12px 10px;
 }
+.slider-track.mobile-scroll {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  transform: none !important;
+  transition: none !important;
+  scrollbar-width: none;
+}
+.slider-track.mobile-scroll::-webkit-scrollbar { display: none; }
 .slider-btn {
   position: absolute;
   top: 50%;

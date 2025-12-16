@@ -40,6 +40,7 @@ let stepSize = 0;
 let startX = 0;
 let currentTranslate = 0;
 let isDragging = false;
+let mobileMode = false;
 
 const computeStep = () => {
   if (!sliderTrack || slides.length === 0) return 0;
@@ -49,7 +50,7 @@ const computeStep = () => {
 };
 
 const updateSlider = (instant = false) => {
-  if (!sliderTrack) return;
+  if (!sliderTrack || mobileMode) return;
   sliderTrack.style.transition = instant ? 'none' : 'transform 0.45s ease';
   sliderTrack.style.transform = `translateX(-${currentIndex * stepSize}px)`;
 };
@@ -58,19 +59,18 @@ const initSlider = () => {
   stepSize = computeStep();
   currentIndex = 0;
   updateSlider(true);
-  // re-enable transition
   void sliderTrack?.offsetWidth;
   if (sliderTrack) sliderTrack.style.transition = 'transform 0.45s ease';
 };
 
 const handleNext = () => {
-  if (!slides.length) return;
+  if (!slides.length || mobileMode) return;
   currentIndex = (currentIndex + 1) % slides.length;
   updateSlider();
 };
 
 const handlePrev = () => {
-  if (!slides.length) return;
+  if (!slides.length || mobileMode) return;
   currentIndex = (currentIndex - 1 + slides.length) % slides.length;
   updateSlider();
 };
@@ -78,16 +78,37 @@ const handlePrev = () => {
 prevBtn?.addEventListener('click', handlePrev);
 nextBtn?.addEventListener('click', handleNext);
 
-window.addEventListener('resize', () => {
-  stepSize = computeStep();
-  updateSlider(true);
-});
+const detectMode = () => {
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+  const narrow = window.innerWidth <= 768;
+  const nextMode = coarse || narrow;
+  if (nextMode !== mobileMode) {
+    mobileMode = nextMode;
+    if (mobileMode) {
+      sliderTrack?.classList.add('mobile-scroll');
+      if (sliderTrack) {
+        sliderTrack.style.transition = 'none';
+        sliderTrack.style.transform = 'none';
+      }
+    } else {
+      sliderTrack?.classList.remove('mobile-scroll');
+      initSlider();
+    }
+  } else if (!mobileMode) {
+    initSlider();
+  }
+};
 
+detectMode();
 initSlider();
+
+window.addEventListener('resize', () => {
+  detectMode();
+});
 
 // Touch drag/swipe for mobile
 const touchStart = (e) => {
-  if (!sliderTrack) return;
+  if (!sliderTrack || mobileMode) return;
   isDragging = true;
   startX = e.touches ? e.touches[0].clientX : e.clientX;
   sliderTrack.style.transition = 'none';
@@ -95,14 +116,14 @@ const touchStart = (e) => {
 };
 
 const touchMove = (e) => {
-  if (!isDragging || !sliderTrack) return;
+  if (!isDragging || !sliderTrack || mobileMode) return;
   const x = e.touches ? e.touches[0].clientX : e.clientX;
   const delta = x - startX;
   sliderTrack.style.transform = `translateX(${currentTranslate + delta}px)`;
 };
 
 const touchEnd = (e) => {
-  if (!isDragging) return;
+  if (!isDragging || mobileMode) return;
   isDragging = false;
   if (!sliderTrack) return;
   const x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
