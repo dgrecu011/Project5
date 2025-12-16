@@ -30,36 +30,84 @@ const toggleBackToTop = () => {
 toggleBackToTop();
 window.addEventListener('scroll', toggleBackToTop);
 
-// Slider controls
+// Slider controls (looping with clones)
 const sliderTrack = document.querySelector('.slider-track');
 const prevBtn = document.querySelector('.slider-btn.prev');
 const nextBtn = document.querySelector('.slider-btn.next');
+let slides = sliderTrack ? Array.from(sliderTrack.children) : [];
+let currentIndex = 1;
+let stepSize = 0;
 
-const scrollAmount = () => {
-  if (!sliderTrack) return 0;
-  return sliderTrack.clientWidth * 0.8;
+const buildClones = () => {
+  if (!sliderTrack || !slides.length) return;
+  const first = slides[0].cloneNode(true);
+  const last = slides[slides.length - 1].cloneNode(true);
+  sliderTrack.appendChild(first);
+  sliderTrack.insertBefore(last, slides[0]);
+  slides = Array.from(sliderTrack.children);
 };
 
-const slideLeft = () => {
+const computeStep = () => {
+  if (!sliderTrack || slides.length === 0) return 0;
+  const style = getComputedStyle(sliderTrack);
+  const gap = parseFloat(style.columnGap || style.gap || '18');
+  return slides[0].offsetWidth + gap;
+};
+
+const applyTransform = (instant = false) => {
   if (!sliderTrack) return;
-  const atStart = sliderTrack.scrollLeft <= 5;
-  if (atStart) {
-    const max = sliderTrack.scrollWidth - sliderTrack.clientWidth;
-    sliderTrack.scrollTo({ left: max, behavior: 'smooth' });
-  } else {
-    sliderTrack.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+  sliderTrack.style.transition = instant ? 'none' : 'transform 0.45s ease';
+  sliderTrack.style.transform = `translateX(-${currentIndex * stepSize}px)`;
+};
+
+const initSlider = () => {
+  if (!sliderTrack || !slides.length) return;
+  buildClones();
+  stepSize = computeStep();
+  currentIndex = 1;
+  applyTransform(true);
+  // force reflow to re-enable transition
+  void sliderTrack.offsetWidth;
+  sliderTrack.style.transition = 'transform 0.45s ease';
+};
+
+const handleNext = () => {
+  if (!sliderTrack) return;
+  currentIndex += 1;
+  applyTransform();
+};
+
+const handlePrev = () => {
+  if (!sliderTrack) return;
+  currentIndex -= 1;
+  applyTransform();
+};
+
+const onTransitionEnd = () => {
+  if (!sliderTrack || slides.length === 0) return;
+  // if we've moved past the last real slide
+  if (currentIndex === slides.length - 1) {
+    currentIndex = 1;
+    applyTransform(true);
+    void sliderTrack.offsetWidth;
+    sliderTrack.style.transition = 'transform 0.45s ease';
+  }
+  // if we've moved before the first real slide
+  if (currentIndex === 0) {
+    currentIndex = slides.length - 2;
+    applyTransform(true);
+    void sliderTrack.offsetWidth;
+    sliderTrack.style.transition = 'transform 0.45s ease';
   }
 };
-const slideRight = () => {
-  if (!sliderTrack) return;
-  const max = sliderTrack.scrollWidth - sliderTrack.clientWidth;
-  const nearEnd = sliderTrack.scrollLeft + sliderTrack.clientWidth >= max - 5;
-  if (nearEnd) {
-    sliderTrack.scrollTo({ left: 0, behavior: 'smooth' });
-  } else {
-    sliderTrack.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
-  }
-};
 
-prevBtn?.addEventListener('click', slideLeft);
-nextBtn?.addEventListener('click', slideRight);
+prevBtn?.addEventListener('click', handlePrev);
+nextBtn?.addEventListener('click', handleNext);
+sliderTrack?.addEventListener('transitionend', onTransitionEnd);
+
+window.addEventListener('resize', () => {
+  stepSize = computeStep();
+  applyTransform(true);
+});
+
+initSlider();
