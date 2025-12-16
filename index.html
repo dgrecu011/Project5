@@ -25,7 +25,7 @@
   </header>
 
   <main>
-    <section class="hero">
+    <section class="hero" id="hero">
       <div class="hero__text">
         <p class="eyebrow">Conversion-focused</p>
         <h1>Landing pages that turn visitors into customers.</h1>
@@ -38,8 +38,6 @@
           <span>3-day delivery</span>
           <span>Revisions included</span>
           <span>Mobile-first & SEO-ready</span>
-        </div>
-        <div class="badges">
           <span>Recent lift: +18% conversions</span>
           <span>Performance: under 1.5s TTFB</span>
         </div>
@@ -172,47 +170,59 @@
         <h2>Proof of craft and conversions.</h2>
         <p class="lede">A mix of business, hospitality, portfolio, and SaaS demos.</p>
       </div>
-      <div class="portfolio-grid">
-        <article class="tile">
-          <div class="thumb blue"></div>
-          <div class="tile__body">
-            <h3>NovaGrowth Studio — Business Website</h3>
-            <p>Conversion-focused site for financial services. Clear CTAs and trust blocks.</p>
-            <div class="meta"><span>Cost: $50-$100</span><span>Timeline: 1-7 days</span></div>
-          </div>
-        </article>
-        <article class="tile">
-          <div class="thumb gold"></div>
-          <div class="tile__body">
-            <h3>Golden House — Premium Restaurant</h3>
-            <p>Fine dining experience with menu highlights, booking CTA, and rich visuals.</p>
-            <div class="meta"><span>Conversion-first</span><span>Premium feel</span></div>
-          </div>
-        </article>
-        <article class="tile">
-          <div class="thumb gastro"></div>
-          <div class="tile__body">
-            <h3>Gastro Restaurant Website</h3>
-            <p>Modern gastro site built to drive reservations and showcase specials.</p>
-            <div class="meta"><span>Responsive</span><span>Clean UI</span></div>
-          </div>
-        </article>
-        <article class="tile">
-          <div class="thumb light"></div>
-          <div class="tile__body">
-            <h3>Morgan — Freelancer Portfolio</h3>
-            <p>Personal site with metrics, service highlights, and lead capture CTA.</p>
-            <div class="meta"><span>Lead capture</span><span>SEO ready</span></div>
-          </div>
-        </article>
-        <article class="tile highlight">
-          <div class="thumb saas"></div>
-          <div class="tile__body">
-            <h3>New: SaaS/Startup Landing</h3>
-            <p>Pricing, KPI highlights, and trial CTA — shows B2B conversion chops.</p>
-            <div class="meta"><span>Pricing table</span><span>Trial CTA</span></div>
-          </div>
-        </article>
+      <div class="slider">
+        <button class="slider-btn prev" aria-label="Previous projects">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="m14 6-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="slider-track">
+          <article class="tile">
+            <div class="thumb blue" style="background-image: url('https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/3dba63a5a4bb920c4c83887e6cfed5f8-1765623489531/1.png'); background-size: cover; background-position: center;"></div>
+            <div class="tile__body">
+              <h3>NovaGrowth Studio — Business Website</h3>
+              <p>Conversion-focused site for financial services. Clear CTAs and trust blocks.</p>
+              <div class="meta"><span>Cost: $50-$100</span><span>Timeline: 1-7 days</span></div>
+            </div>
+          </article>
+          <article class="tile">
+            <div class="thumb gold" style="background-image: url('https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/14628385f477d93f0c669ce0673af632-1765820618834/Captur%C4%83%20de%20ecran%202025-12-15%20193900.png'); background-size: cover; background-position: center;"></div>
+            <div class="tile__body">
+              <h3>Golden House — Premium Restaurant</h3>
+              <p>Fine dining experience with menu highlights, booking CTA, and rich visuals.</p>
+              <div class="meta"><span>Conversion-first</span><span>Premium feel</span></div>
+            </div>
+          </article>
+          <article class="tile">
+            <div class="thumb gastro" style="background-image: url('https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/dac13021fb2f19bacf313b0c423508ac-1765559755036/1.png'); background-size: cover; background-position: center;"></div>
+            <div class="tile__body">
+              <h3>Gastro Restaurant Website</h3>
+              <p>Modern gastro site built to drive reservations and showcase specials.</p>
+              <div class="meta"><span>Responsive</span><span>Clean UI</span></div>
+            </div>
+          </article>
+          <article class="tile">
+            <div class="thumb light" style="background-image: url('https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/694066878878b0768af96e43594a100e-1765573302321/1.png'); background-size: cover; background-position: center;"></div>
+            <div class="tile__body">
+              <h3>Morgan — Freelancer Portfolio</h3>
+              <p>Personal site with metrics, service highlights, and lead capture CTA.</p>
+              <div class="meta"><span>Lead capture</span><span>SEO ready</span></div>
+            </div>
+          </article>
+          <article class="tile highlight">
+            <div class="thumb saas" style="background-image: url('project5.png'); background-size: cover; background-position: center;"></div>
+            <div class="tile__body">
+              <h3>New: SaaS/Startup Landing</h3>
+              <p>Pricing, KPI highlights, and trial CTA — shows B2B conversion chops.</p>
+              <div class="meta"><span>Pricing table</span><span>Trial CTA</span></div>
+            </div>
+          </article>
+        </div>
+        <button class="slider-btn next" aria-label="Next projects">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="m10 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </div>
     </section>
 
@@ -294,10 +304,31 @@
   <footer class="footer">
     <p>Built by Dionis G — conversion-ready landing pages.</p>
     <div class="footer__links">
-      <a href="https://www.fiverr.com/dgrecu011/create-a-clean-landing-page-for-your-product-or-service" target="_blank" rel="noreferrer">Fiverr</a>
-      <a href="mailto:work@dionisg.com">Email</a>
+      <a href="https://www.fiverr.com/dgrecu011/create-a-clean-landing-page-for-your-product-or-service" target="_blank" rel="noreferrer">
+        <span class="footer__icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 12.5C4 8.91 6.91 6 10.5 6H20v4h-9.5a2.5 2.5 0 0 0 0 5H17v4h-6.5C6.91 19 4 16.09 4 12.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Fiverr
+      </a>
+      <a href="mailto:work@dionisg.com">
+        <span class="footer__icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Email
+      </a>
     </div>
   </footer>
+
+  <a class="back-to-top" href="#hero" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 5l7 7m-7-7-7 7m7-7v14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
 
   <script src="script.js"></script>
 </body>
