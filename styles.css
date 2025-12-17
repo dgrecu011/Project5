@@ -92,6 +92,42 @@ main { padding: 40px 28px 80px; max-width: 1180px; margin: 0 auto; }
 .bars { display: flex; flex-direction: column; gap: 8px; }
 .bars span { display: block; height: 8px; border-radius: 8px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
 .mini { color: var(--muted); font-size: 12px; margin-top: 10px; }
+.skill-card { width: min(100%, 380px); display: grid; gap: 12px; }
+.skill-card__top { display: flex; align-items: center; gap: 12px; }
+.skill-sub { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+.skill-rings { display: grid; grid-template-columns: repeat(auto-fit, minmax(92px, 1fr)); gap: 12px; align-items: center; }
+.skill-ring { position: relative; width: 100%; aspect-ratio: 1; display: grid; place-items: center; }
+.skill-ring::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0)); filter: blur(6px); opacity: 0.9; }
+.ring__circle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from -90deg, var(--from) 0deg, var(--to) var(--value), rgba(15,31,58,0.08) var(--value), rgba(15,31,58,0.04) 360deg);
+  box-shadow: 0 12px 30px rgba(15,31,58,0.1);
+}
+.ring__circle::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  background: rgba(255,255,255,0.96);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.ring__center { position: relative; display: grid; place-items: center; gap: 2px; text-align: center; }
+.ring__center strong { font-size: 12px; letter-spacing: 0.02em; color: var(--muted); }
+.ring__center span { color: var(--text); font-weight: 800; font-size: 16px; letter-spacing: -0.01em; }
+.skill-ring.html { --from: #ff9a62; --to: #ff5f76; }
+.skill-ring.css { --from: #3ac6ff; --to: #5e5ce6; }
+.skill-ring.js { --from: #ffd166; --to: #ff9f1c; }
+.skill-legend { display: grid; gap: 10px; }
+.legend-row { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.9); border: 1px solid var(--border); box-shadow: 0 6px 16px rgba(15,31,58,0.08); }
+.legend-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; box-shadow: 0 6px 14px rgba(15,31,58,0.12); }
+.legend-dot.html { background: linear-gradient(135deg, #ff9a62, #ff5f76); }
+.legend-dot.css { background: linear-gradient(135deg, #3ac6ff, #5e5ce6); }
+.legend-dot.js { background: linear-gradient(135deg, #ffd166, #ff9f1c); }
+.legend-row .name { margin: 0; font-weight: 700; }
+.legend-row .desc { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+.legend-row .score { margin: 0; font-weight: 700; color: var(--text); }
 
 .section-head { margin: 60px 0 24px; }
 .section-head h2 { margin: 6px 0; font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
